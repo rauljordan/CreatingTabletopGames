@@ -31,8 +31,6 @@ struct GameInteraction: TabletopInteraction.Delegate {
             interaction.setAllowedDestinations(.restricted([]))
         }
         if game.tabletopGame.equipment(of: Pawn.self, matching: interaction.value.startingEquipmentID) != nil {
-            // Don't let the pawn land on any other equipment, just the table.
-//            interaction.setAllowedDestinations(.restricted([]))
             interaction.setAllowedDestinations(.any)
         }
     }
@@ -53,7 +51,7 @@ struct GameInteraction: TabletopInteraction.Delegate {
         }
         if let pawn = game.tabletopGame.equipment(of: Pawn.self, matching: interaction.value.startingEquipmentID) {
             // Move the pawn to its new proposed destination with a default pose (centered in new destination).
-            interaction.addAction(.moveEquipment(matching: pawn.id, childOf: dst.equipmentID, pose: .init()))
+            interaction.addAction(.moveEquipment(matching: pawn.id, childOf: .tableID, pose: dst.pose))
         }
         
     }

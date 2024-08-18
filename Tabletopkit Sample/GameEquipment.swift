@@ -34,7 +34,7 @@ struct PlayerSeat: TableSeat {
     let id: ID
     var initialState: TableSeatState
 
-    /* There are three seats around the edges of the table.
+    /* There are three seats around the edges of the table.#imageLiteral(resourceName: "simulator_screenshot_6FA82672-4F2A-4BE1-ACC9-AD50999870AE.png")
     Each seat faces the center of the table. */
     @MainActor static let seatPoses: [TableVisualState.Pose2D] = [
         .init(position: .init(x: 0, z: Double(GameMetrics.tableEdge)), rotation: .degrees(0)),
@@ -138,7 +138,7 @@ struct Die: EntityEquipment {
                                                         from: "static_scene.usda",
                                                         in: tabletopGameSampleContentBundle)
         self.audioPlaybackController = self.entity.prepareAudio(audioResource)
-        representation = .cube(height: entity.visualBounds(relativeTo: nil).extents.x)
+        representation = .icosahedron(height: entity.visualBounds(relativeTo: nil).extents.x)
         let pose: TableVisualState.Pose2D = .init(position: .init(x: -0.3, z: 0.5), rotation: .zero)
         initialState = .init(value: 1, parentID: .tableID, seatControl: .any, pose: pose, entity: self.entity)
     }

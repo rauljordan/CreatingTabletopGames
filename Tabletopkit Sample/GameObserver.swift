@@ -21,6 +21,7 @@ class GameObserver: TabletopGame.Observer {
             if let (die, _) = newSnapshot.equipment(of: Die.self, matching: action.equipmentID) {
                 Task { @MainActor in
                     die.playTossSound()
+                    try await Task.sleep(nanoseconds: 2 * 1_000_000_000)
                 }
                 return
             }
