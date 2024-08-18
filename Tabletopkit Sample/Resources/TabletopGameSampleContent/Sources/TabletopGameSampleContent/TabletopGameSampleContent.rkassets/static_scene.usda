@@ -1,0 +1,125 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 1.0 (413)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root" (
+    references = None
+)
+{
+    float3 xformOp:scale = (0.01, 0.01, 0.01)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def RealityKitAudioFile "dieSoundLong_mp3"
+    {
+        uniform asset file = @dieSoundLong.mp3@
+    }
+
+    def RealityKitAudioFile "dieSoundShort_mp3"
+    {
+        uniform asset file = @dieSoundShort.mp3@
+    }
+
+    def RealityKitAudioFile "pickUpCard_mp3"
+    {
+        uniform asset file = @pickUpCard.mp3@
+    }
+
+    def Xform "Transform" (
+        active = true
+        references = None
+    )
+    {
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "SpatialAudio"
+        {
+            uniform token info:id = "RealityKit.SpatialAudio"
+        }
+    }
+
+    def Cube "Cube" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/Cube/DefaultMaterial>
+        double size = 60
+        float2 ui:nodegraph:node:pos = (-535.8419, 129.76598)
+        int ui:nodegraph:node:stackingOrder = 1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1.5, 0.01, 1.5)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            token outputs:mtlx:surface.connect = </Root/Cube/DefaultMaterial/PreviewSurface.outputs:out>
+            token outputs:realitykit:vertex
+            token outputs:surface.connect = </Transform/Cube/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:realitykit:vertex", "outputs:realitykit:vertex"]
+            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (-172.64453, 124.27344)
+            float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+            int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 142
+
+            def Shader "DefaultSurfaceShader" (
+                active = false
+            )
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+
+            def Shader "PreviewSurface"
+            {
+                uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
+                float inputs:clearcoat
+                float inputs:clearcoatRoughness
+                color3f inputs:diffuseColor.connect = </Root/Cube/DefaultMaterial/RealityKitTexture2D.outputs:out>
+                color3f inputs:emissiveColor
+                float inputs:ior
+                float inputs:metallic
+                float3 inputs:normal
+                float inputs:occlusion
+                float inputs:opacity
+                float inputs:opacityThreshold
+                float inputs:roughness = 0.9
+                token outputs:out
+                float2 ui:nodegraph:node:pos = (-440.53125, 101.17969)
+                float2 ui:nodegraph:node:size = (148.5, 199)
+                int ui:nodegraph:node:stackingOrder = 184
+                string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:clearcoat", "inputs:roughness", "inputs:opacity", "inputs:roughness", "inputs:roughness", "Advanced"]
+            }
+
+            def Shader "RealityKitTexture2D"
+            {
+                uniform token info:id = "ND_RealityKitTexture2D_color3"
+                float inputs:bias
+                string inputs:border_color = "transparent_black"
+                color3f inputs:default = (0, 0, 0) (
+                    colorSpace = "srgb_displayp3"
+                )
+                float inputs:dynamic_min_lod_clamp
+                asset inputs:file = @Base.jpg@
+                bool inputs:no_flip_v = 0
+                int2 inputs:offset
+                string inputs:u_wrap_mode = "clamp_to_edge"
+                string inputs:v_wrap_mode = "clamp_to_edge"
+                color3f outputs:out
+                float2 ui:nodegraph:node:pos = (-701.7422, 108.1875)
+                float2 ui:nodegraph:node:size = (174.5, 361)
+                int ui:nodegraph:node:stackingOrder = 168
+                string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:v_wrap_mode", "inputs:max_lod_clamp", "inputs:no_flip_v"]
+            }
+        }
+    }
+}
+
